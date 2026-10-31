@@ -20,7 +20,7 @@ It also includes a page-checker script (in the appendix) that screenshots your p
 
 ### In the Claude app (claude.ai, desktop or web)
 
-1. Download **`design-engineer.zip`** from the [latest release](../../releases/latest).
+1. Download **[`design-engineer.zip`](https://github.com/SamSto4/Design-Engineer-Skill/raw/main/design-engineer.zip)** from this repo.
 2. In Claude, open **Settings → Capabilities** and make sure **Skills** is turned on.
 3. Click **Upload skill** and choose the zip.
 4. Ask Claude for any design work, like *"design a landing page for my coffee shop"*. The skill turns on by itself.
@@ -48,5 +48,6 @@ npx skills add SamSto4/Design-Engineer-Skill
 ## Files
 
 ```
-SKILL.md   ← the whole skill (instructions + the check_page.py and render-states.tsx tools)
+SKILL.md               ← the whole skill (instructions + the check_page.py and render-states.tsx tools)
+design-engineer.zip    ← the same skill, zipped for uploading into the Claude app
 ```
