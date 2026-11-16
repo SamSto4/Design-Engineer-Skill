@@ -939,6 +939,7 @@ Build a cohesive, memorable site whose visual idea, media, typography, and motio
 - A composed intro sequence (GSAP timeline for story pages; CSS is enough for a light hero), but **navigation, the primary message, and the CTA are readable and usable before it completes**.
 - Pointer effects are additive: they handle touch, keyboard, coarse pointers, window blur, and `visibilitychange` without leaving the UI half-animated.
 - **A complete static first frame** when JavaScript, media playback, WebGL, or motion is unavailable.
+- **Don't force a full-height hero on tall portrait screens.** A width-capped headline on a portrait tablet leaves a void if the hero is `min-height: 100svh` with `space-between`; under `(orientation: portrait)` let the hero size to its content.
 - **The phone first screen carries the message and the action.** Atmosphere (a glow, a gradient, an empty stage for a missing photo) never takes most of a 375px viewport; recompose the hero for phones rather than scaling the desktop stage down.
 
 ## J4. The motion system
