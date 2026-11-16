@@ -105,7 +105,7 @@ Words are design content, not decoration: each piece of text does exactly one jo
 
 - Lead with the outcome the reader cares about, in their words ("Swirl-free in one visit", not "Premium exterior care solutions"). Describe what something is or does in plain terms rather than selling it; specific beats clever.
 - Name things from the user's side, not the system's: people manage *notifications*, not *webhook config*.
-- Buttons say what happens ("Book a detail", "Save changes"), in active voice. An action keeps its name through the whole flow: the "Publish" button produces a "Published" toast, and the same action has the same label everywhere.
+- Buttons say what happens ("Book a detail", "Save changes"), in active voice, and it must be true of the destination: "Message Sam on GitHub" is wrong when GitHub has no messages ("Find Sam on GitHub"). An action keeps its name through the whole flow: the "Publish" button produces a "Published" toast, and the same action has the same label everywhere.
 - Headlines of 8 words or fewer; one idea per sentence; no hedging or feature soup. A full sentence with a period ("Build a survey worth answering.") reads more confident than a fragment.
 - Errors say what went wrong and how to fix it, in the interface's voice: they don't apologize and are never vague. Empty states are invitations to act.
 - Sentence case, plain verbs, no filler; tone matched to the brand and audience.
@@ -268,6 +268,7 @@ Run this before handing over. Fix failures rather than reporting them.
 - [ ] Checked at ~360px, tablet, and wide desktop. Layout recomposes, not just squeezes.
 - [ ] Components adapt to their container width; short labels don't wrap at the widths they live at.
 - [ ] No horizontal scroll at phone width; tap targets comfortable, including the logo/home link.
+- [ ] A sticky header over a dark band switches color exactly when the band reaches the header's bottom edge (an IntersectionObserver line at that edge), not on a looser "section in view" trigger that leaves a pale strip.
 - [ ] The primary action stays reachable on phones: when the nav collapses, the CTA stays visible in the header (or a floating CTA per B1), not hidden inside the menu.
 - [ ] F1 basics applied: `dvh`/`svh` not `100vh`, 16px inputs, safe-area insets, no tap flash, hover gated.
 
@@ -926,6 +927,7 @@ Build a cohesive, memorable site whose visual idea, media, typography, and motio
 ## J3. The hero
 
 - **The signature move owns the first viewport.** In this mode it takes most of the screen (roughly 60% or more at 1280px and on phones), not a card beside a standard two-column hero. A clever idea in a small panel reads as a component demo, not a site.
+- **Draggable seams and sliders stay on stage**: clamp the handle a few percent inside both edges so the knob and its focus ring never leave the screen, and hide side labels that would.
 - **Display-type gotchas found in testing.** (1) `em` inside `clip-path`, `inset`, or padding resolves against *that element's* font size: a wrapper at 16px gives `-0.35em` = 5.6px of bleed and clips the giant headline's descenders. Size bleeds for display type in `rem`/`vh`, and check every descender (g, j, p, y) in the screenshots. (2) Outlined display text (`-webkit-text-stroke`) shows a variable font's internal overlap contours as boxes and notches, even with static instances. Fill the glyphs with the ground color over a doubled stroke (`color: var(--ground); -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill`) so the fill hides the inner lines, or draw the outline as SVG.
 - **Scale display type past the brand's display token when the hero needs it.** A brand token like "display 56px" was set for product UI. Keep the brand's family, weight, and tracking *ratio*, and scale the hero to award scale (B1: 5–16× body, e.g. `clamp(4rem, 12vw, 11rem)`), tightening tracking as it grows. Say in one line that you scaled it. Everything below the hero goes back to the brand's scale.
 - The first viewport is the site's strongest authored moment: a clear message and CTA plus original imagery, video, pointer-responsive interaction, or a justified Three.js scene.
