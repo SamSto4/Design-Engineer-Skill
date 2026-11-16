@@ -106,7 +106,7 @@ Words are design content, not decoration: each piece of text does exactly one jo
 - Lead with the outcome the reader cares about, in their words ("Swirl-free in one visit", not "Premium exterior care solutions"). Describe what something is or does in plain terms rather than selling it; specific beats clever.
 - Name things from the user's side, not the system's: people manage *notifications*, not *webhook config*.
 - Buttons say what happens ("Book a detail", "Save changes"), in active voice, and it must be true of the destination: "Message Sam on GitHub" is wrong when GitHub has no messages ("Find Sam on GitHub"). An action keeps its name through the whole flow: the "Publish" button produces a "Published" toast, and the same action has the same label everywhere.
-- Headlines of 8 words or fewer; one idea per sentence; no hedging or feature soup. A full sentence with a period ("Build a survey worth answering.") reads more confident than a fragment.
+- Headlines of 8 words or fewer; one idea per sentence; no hedging or feature soup. A full sentence with a period ("Build a survey worth answering.") reads more confident than a fragment, but a period on *every* heading becomes a tic; use it where the line is a statement.
 - Errors say what went wrong and how to fix it, in the interface's voice: they don't apologize and are never vague. Empty states are invitations to act.
 - Sentence case, plain verbs, no filler; tone matched to the brand and audience.
 - Numbers beat adjectives: use the most specific true fact (A2), never an invented one. Put the price in a plain sentence near the action ("$15 a month, with 10,000 responses") rather than hiding it.
@@ -335,7 +335,9 @@ AI-generated design currently clusters around a few looks. Each is legitimate fo
 
 Typographic tells: accenting a single word or phrase in a headline (one word in italic, bold, or a different color); all-caps for routine labels; typographic labels added above content that doesn't need them.
 
-**Copy tells**: self-congratulating headings ("Every value on this page was chosen", "Crafted with care"); stock closers ("Have a project in mind?", "Let's build something great"); the same one-line description reused across items. Write the specific, plain line instead.
+**Copy tells**: self-congratulating headings ("Every value on this page was chosen", "Crafted with care"); stock closers ("Have a project in mind?", "Let's build something great"); the same one-line description reused across items, or the same sentence frame under every item ("Use it for…" ×5); copy that describes the page itself ("every value was chosen", "says when it earns its place"). Write the specific, plain line instead.
+
+**Card-row tell**: a row of N equal icon cards as the hero (one per feature or demo). Turn the set into one object that encodes how the items relate (a timeline, a sequence, a map), or let one item lead.
 
 **Layout tell**: the same section header pattern (small label left, big heading right) repeated on every section. Let each section's content decide its shape; a repeated pattern should be a deliberate system, not the default.
 
