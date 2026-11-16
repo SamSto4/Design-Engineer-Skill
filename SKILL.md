@@ -269,6 +269,8 @@ Run this before handing over. Fix failures rather than reporting them.
 - [ ] Components adapt to their container width; short labels don't wrap at the widths they live at.
 - [ ] No horizontal scroll at phone width; tap targets comfortable, including the logo/home link.
 - [ ] A sticky header over a dark band switches color exactly when the band reaches the header's bottom edge (an IntersectionObserver line at that edge), not on a looser "section in view" trigger that leaves a pale strip.
+- [ ] Focusing a link in a sticky header never scrolls the page: use `scroll-margin-top` on the anchored sections, not `scroll-padding-top` on `html` (which makes the sticky header "cover" its own focused links and jumps the page).
+- [ ] Every primary action leads somewhere real; a CTA that ends at a placeholder needs a working fallback action beside it.
 - [ ] The primary action stays reachable on phones: when the nav collapses, the CTA stays visible in the header (or a floating CTA per B1), not hidden inside the menu.
 - [ ] F1 basics applied: `dvh`/`svh` not `100vh`, 16px inputs, safe-area insets, no tap flash, hover gated.
 
@@ -332,6 +334,10 @@ AI-generated design currently clusters around a few looks. Each is legitimate fo
 5. **Template chrome**: a tracked-out ALL-CAPS eyebrow above every heading; meta strings joined with middle dots (`A · B · C`); labels built as `WORD — fragment`; tinted near-black (`#0B0B0B`, `#111`) standing in for black; a monospace face for small data labels; `→` appended to link and button text.
 
 Typographic tells: accenting a single word or phrase in a headline (one word in italic, bold, or a different color); all-caps for routine labels; typographic labels added above content that doesn't need them.
+
+**Copy tells**: self-congratulating headings ("Every value on this page was chosen", "Crafted with care"); stock closers ("Have a project in mind?", "Let's build something great"); the same one-line description reused across items. Write the specific, plain line instead.
+
+**Layout tell**: the same section header pattern (small label left, big heading right) repeated on every section. Let each section's content decide its shape; a repeated pattern should be a deliberate system, not the default.
 
 **Structure is information.** Outlines, borders, numbering, eyebrows, dividers, and labels must encode something about the content, not decorate it. Numbered markers (01 / 02 / 03) only when the content really is a sequence (steps, a timeline); check before adding them.
 
