@@ -131,7 +131,7 @@ Words are design content, not decoration: each piece of text does exactly one jo
   - Pages: write the checker from Appendix 1 to `check_page.py` (only if it isn't already on disk) and run `python check_page.py <page.html>` (needs `pip install playwright` + Chromium).
   - Components: render all states side by side first. Use the project's Storybook or dev server if it has one; otherwise write Appendix 2 to `render-states.tsx` in a scratch folder and follow its header. Then run the checker on the result.
 
-  The checker screenshots ~300ms after load, so a page with an intro sequence or scroll-driven reveals also needs your own screenshots after it settles (scroll each section into view and wait ~1s); a mid-animation frame hides real bugs and invents fake ones.
+  The checker screenshots ~300ms after load (pass `--settle 2500` to wait longer), so a page with an intro sequence or scroll-driven reveals also needs your own screenshots after it settles (scroll each section into view and wait ~1s); a mid-animation frame hides real bugs and invents fake ones.
 
   The checker screenshots 320px, 375px, 768px and 1280px in light and dark, and flags contrast failures (opacity and modern `oklch`/`color()` colors included), overflow, unlabeled inputs, small targets, competing CTAs, short labels that wrap, and loading states whose height doesn't match the ready state. Then actually view the screenshots; the script can't judge hierarchy or taste. Fix what fails rather than listing it. Without a browser, walk the pre-ship checklist (B3) by hand.
 - **Then test behavior, which the checker can't see.** With Playwright: Tab once (the skip link comes first), operate every custom control by keyboard, open and Esc-close menus (focus returns to the trigger), load with `reduced_motion='reduce'` (no movement or scrubbed sequences; final states shown; small opacity/color feedback may remain), block the network and wait past the embed timeout (the fallback shows), check floating CTAs appear only when no other primary CTA is visible, and confirm zero horizontal overflow at 320px.
@@ -438,6 +438,8 @@ Need another curve? Take it from easing.dev or easings.co; don't hand-roll one.
 ```
 
 Keep bounce at 0.1–0.3 and use it **only when the gesture carried momentum**.
+
+**Velocity handoff needs the physics form.** In testing with Motion 14.9, springs defined by `duration`/`bounce` dropped the inherited velocity, so a release or mid-flight interruption restarted from rest. When a spring must carry a gesture's or an interrupted animation's speed, define it by `stiffness`/`damping`/`mass` and pass `velocity`, then verify by interrupting it mid-flight. Duration-based springs are fine for state changes that start at rest.
 
 **Interruption and exit**
 - Transitions, not keyframes, for anything triggered rapidly (toasts, toggles): transitions retarget from the current value, while keyframes restart from zero.
@@ -1010,7 +1012,7 @@ Write this to `check_page.py` when you need to check a page (Part A5). Requires 
 """Render a page and run the mechanical checks from the quality bar.
 
 Usage:
-  python check_page.py <file.html | URL> [--out DIR] [--no-dark]
+  python check_page.py <file.html | URL> [--out DIR] [--no-dark] [--settle MS]
 
 Produces full-page screenshots (small phone 320px, phone 375px, tablet 768px,
 desktop 1280px; light and dark)
@@ -1170,6 +1172,7 @@ def main():
     ap.add_argument("target")
     ap.add_argument("--out", default="page-check")
     ap.add_argument("--no-dark", action="store_true")
+    ap.add_argument("--settle", type=int, default=300, help="ms to wait after load; raise it (e.g. 2500) for pages with an intro sequence so checks run on the settled page")
     a = ap.parse_args()
     try:
         from playwright.sync_api import sync_playwright
@@ -1189,7 +1192,7 @@ def main():
                     pg.wait_for_load_state("networkidle", timeout=5000)  # embeds/analytics may never go idle
                 except Exception:
                     pass
-                pg.wait_for_timeout(300)
+                pg.wait_for_timeout(a.settle)
                 key = f"{name}-{scheme}"
                 res = pg.evaluate(JS, {"countCtas": name == "phone"})
                 res["overflow_px"] = max(0, pg.evaluate("document.documentElement.scrollWidth") - w)
