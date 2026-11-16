@@ -959,7 +959,9 @@ Build a cohesive, memorable site whose visual idea, media, typography, and motio
 - One clear responsibility per canvas, subordinate to semantic content and controls.
 - Cap device pixel ratio (`Math.min(devicePixelRatio, 2)`), pause when offscreen (IntersectionObserver) or hidden (`visibilitychange`), throttle pointer input, and avoid per-frame allocation.
 - A static poster image replaces the canvas entirely under reduced motion or WebGL failure; handle `webglcontextlost` without breaking the page.
-- Dispose of everything: animation frames, observers, listeners, render targets, textures, geometries, materials, the renderer.
+- Dispose of everything: animation frames, observers, listeners, render targets, textures, geometries, materials, the renderer. Disposal is not recursive: `material.dispose()` leaves its textures alone, and `object.dispose()` doesn't visit children, so traverse the scene and dispose each geometry, each material, and every texture on each material.
+- Pin the version in an import map (`three@0.186.0`, never a bare or `@latest` URL). With `WebGPURenderer`, `await renderer.init()` before the first render; it falls back to WebGL 2 by itself, so the poster fallback is for "no WebGL at all", reduced motion, and context loss.
+- For API depth (loaders, materials, lighting, shaders, post-processing, React Three Fiber, glTF compression), use the three.js skills (CloudAI-X/threejs-skills) when they're installed. This part decides *whether* 3D earns a place and how it degrades; those decide *how* to build it.
 
 ## J6. The bar
 

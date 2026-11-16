@@ -17,6 +17,14 @@ Made by Sam ([@SamSto4](https://github.com/SamSto4)). It combines my own UI Desi
 
 It also includes a page-checker script (in the appendix) that screenshots your page at four widths in light and dark mode and flags contrast, overflow, unlabeled inputs and small tap targets, plus likely "template tells" (tracked all-caps eyebrows, arrow-suffixed buttons, `A · B · C` meta strings and similar).
 
+## Optional companion skills
+
+For 3D work the skill defers API details to the [three.js skills](https://github.com/CloudAI-X/threejs-skills):
+
+```bash
+npx skills add CloudAI-X/threejs-skills
+```
+
 ## Optional: Awwwards reference tool
 
 The skill knows how to use the [Awwwards MCP](https://github.com/INSANE0777/Awwwards-mcp) to pull award-winning sites as references. Add it in Claude Code on your own computer:
