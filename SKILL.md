@@ -78,8 +78,9 @@ Interfaces are judged with real words in them, and invented facts are a liabilit
 - For anything unknown (prices, hours, service area, reviews, team, stats), use a **visible placeholder**, styled so nobody could ship it by accident. Never a plausible-looking guess.
 - **Sanity-check real facts before publishing them.** A phone number with the wrong digit count, a dead link, two spellings of the business name: leave the broken one out and flag it rather than shipping it prettier.
 - **Wire into what the business already uses.** If they book through Calendly, take payments through Square, or collect leads in a CRM form, embed or link that; don't build a demo form that goes nowhere. Third-party embeds get their own states: loading, and a fallback link for when an ad blocker or slow network stops the embed. A blocked iframe still fires `load`, so detect success with the provider's own `postMessage` event (Calendly sends `calendly.*` events when `embed_domain` is set) or treat no signal within ~8s as failure, and always keep a plain "open in a new tab" link under the embed.
+- **Booking sites put the booking tool within the first two screens** (beside or right after the hero), and the final section repeats it. A calendar that only appears at the bottom of a 4,000px phone page loses people. Eager-load an embed that sits above the fold; lazy-load it otherwise.
 - **The primary action must be one the business actually offers.** Don't make "Order for pickup" the main button when nobody said they take orders; pick the action the brief supports (visit, call, book through the named tool) and, if a likelier action is unconfirmed, show it as a visible placeholder and ask in the handoff.
-- **Notes to the owner stay out of the page.** Instructions like "swap in your real prices" live inside a placeholder's own label or in the handoff message, never as visible page copy. Don't pre-fill plausible "facts" (opening days, bake times) as if they were real.
+- **Notes to the owner stay out of the page.** Instructions like "swap in your real prices" live inside a placeholder's own label or in the handoff message, never as visible page copy. Don't pre-fill plausible "facts" (opening days, bake times) as if they were real. Marketing claims are facts too: "no two pieces are identical" or a first-person bio the owner never wrote needs a placeholder or the owner's own words.
 - **Design for the amount of content that exists.** One review is a featured quote, not a three-card grid with two empty slots; four photos is a tight strip, not a twelve-tile gallery.
 
 ## A3. Pick a direction before building
@@ -926,6 +927,7 @@ Build a cohesive, memorable site whose visual idea, media, typography, and motio
 - A composed intro sequence (GSAP timeline for story pages; CSS is enough for a light hero), but **navigation, the primary message, and the CTA are readable and usable before it completes**.
 - Pointer effects are additive: they handle touch, keyboard, coarse pointers, window blur, and `visibilitychange` without leaving the UI half-animated.
 - **A complete static first frame** when JavaScript, media playback, WebGL, or motion is unavailable.
+- **The phone first screen carries the message and the action.** Atmosphere (a glow, a gradient, an empty stage for a missing photo) never takes most of a 375px viewport; recompose the hero for phones rather than scaling the desktop stage down.
 
 ## J4. The motion system
 
@@ -937,6 +939,7 @@ Build a cohesive, memorable site whose visual idea, media, typography, and motio
 - When a section earns a reveal, choreograph it as one beat: the heading (word by word only if the words matter one at a time) with a restrained stagger (C2's 30–80ms range), then supporting copy, then media. Sections without an earned reveal are simply there. Entrances still use `--ease-out`-family curves, `transform`/`opacity`, and no `scale(0)`.
 - **Accessible split text**: keep an unsplit accessible name on the heading (`aria-label`, or a visually hidden copy) and `aria-hidden` the split words. Never split links or meaningful inline markup. Without JavaScript the unsplit text is visible.
 - ScrollTrigger only for justified scrubbed or pinned sequences; every pin has a narrative reason.
+- **Cheapest scroll-linked beat: CSS scroll-driven animation.** `animation-timeline: view()` (or `scroll()`) with `animation-range` drives a reveal or a color shift from native scroll, off the main thread, with no library. Wrap it in `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`, with the final state as the default, so unsupported browsers and reduced motion just show the finished frame. A cinematic brief usually deserves one such beat when GSAP isn't available or isn't worth its weight.
 
 ## J5. Three.js only with purpose
 
@@ -992,6 +995,7 @@ and prints a report of things a human reviewer would otherwise have to hunt for:
   - inputs without a label, images without alt
   - interactive targets smaller than 24x24 CSS px (WCAG 2.5.8)
   - how many primary-styled CTAs are visible in the first phone viewport
+  - text touching the screen edge (a padding override that wiped the gutter)
   - possible template tells (B5): tracked caps eyebrows, arrow-suffixed
     buttons, ' · ' meta strings, one-word headline accents, near-black grounds,
     small mono labels (informational; never fails the run)
@@ -1110,6 +1114,14 @@ JS = r"""
   [document.body,...document.querySelectorAll('body > *, main > *, section')].forEach(el=>{ if(nb.has(getComputedStyle(el).backgroundColor)) tl.nearBlack++; });
   document.querySelectorAll('small,span,dt,dd,time,li,p').forEach(el=>{ const cs=getComputedStyle(el); if(vis(el)&&/mono/i.test(cs.fontFamily)&&parseFloat(cs.fontSize)<=13&&!el.closest('pre,code')) tl.mono++; });
   out.tells=tl;
+  // Text touching the viewport edge (a section whose padding override wiped the side gutter)
+  out.edge=[];
+  document.querySelectorAll('h1,h2,h3,p,li,a,button,label').forEach(el=>{
+    const r=el.getBoundingClientRect(), cs=getComputedStyle(el);
+    if(!r.width||cs.position==='fixed'||!el.textContent.trim()||el.closest('[aria-hidden="true"]')) return;
+    if(r.left<4||innerWidth-r.right<4) { if(r.width<innerWidth-2) out.edge.push(el.textContent.trim().slice(0,30)); }
+  });
+  out.edge=[...new Set(out.edge)].slice(0,5);
   if(opts.countCtas){
     const vh=innerHeight;
     document.querySelectorAll('a,button').forEach(el=>{
@@ -1178,6 +1190,8 @@ def main():
             for name, h in st.items():
                 if any(k in name for k in ("loading", "skeleton")) and abs(h - ready) / ready > 0.1:
                     lines.append(f"state '{name}' is {h}px tall vs ready {ready}px — the layout will jump when it loads")
+        for t in r.get("edge", []):
+            lines.append(f"text touches the screen edge (no side gutter; fine only for deliberately bleeding display type): \"{t}\"")
         for t in r.get("wraps", []):
             lines.append(f"short label wraps onto extra lines: \"{t}\" (likely a cramped column)")
         if r["unverified"]: lines.append(f"(info) {r['unverified']} text elements sit on images/gradients — check those by eye")
