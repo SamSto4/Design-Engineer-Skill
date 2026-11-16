@@ -131,6 +131,8 @@ Words are design content, not decoration: each piece of text does exactly one jo
   - Pages: write the checker from Appendix 1 to `check_page.py` (only if it isn't already on disk) and run `python check_page.py <page.html>` (needs `pip install playwright` + Chromium).
   - Components: render all states side by side first. Use the project's Storybook or dev server if it has one; otherwise write Appendix 2 to `render-states.tsx` in a scratch folder and follow its header. Then run the checker on the result.
 
+  The checker screenshots ~300ms after load, so a page with an intro sequence or scroll-driven reveals also needs your own screenshots after it settles (scroll each section into view and wait ~1s); a mid-animation frame hides real bugs and invents fake ones.
+
   The checker screenshots 320px, 375px, 768px and 1280px in light and dark, and flags contrast failures (opacity and modern `oklch`/`color()` colors included), overflow, unlabeled inputs, small targets, competing CTAs, short labels that wrap, and loading states whose height doesn't match the ready state. Then actually view the screenshots; the script can't judge hierarchy or taste. Fix what fails rather than listing it. Without a browser, walk the pre-ship checklist (B3) by hand.
 - **Then test behavior, which the checker can't see.** With Playwright: Tab once (the skip link comes first), operate every custom control by keyboard, open and Esc-close menus (focus returns to the trigger), load with `reduced_motion='reduce'` (no movement or scrubbed sequences; final states shown; small opacity/color feedback may remain), block the network and wait past the embed timeout (the fallback shows), check floating CTAs appear only when no other primary CTA is visible, and confirm zero horizontal overflow at 320px.
 - **Critique while you build, not only at the end.** Screenshot as you go (a picture is worth a thousand tokens) and judge it against the A3 plan. Before handing over, do the "remove one accessory" pass: find the one decoration, effect, or label that isn't earning its place, and cut it.
@@ -924,6 +926,7 @@ Build a cohesive, memorable site whose visual idea, media, typography, and motio
 ## J3. The hero
 
 - **The signature move owns the first viewport.** In this mode it takes most of the screen (roughly 60% or more at 1280px and on phones), not a card beside a standard two-column hero. A clever idea in a small panel reads as a component demo, not a site.
+- **Display-type gotchas found in testing.** (1) `em` inside `clip-path`, `inset`, or padding resolves against *that element's* font size: a wrapper at 16px gives `-0.35em` = 5.6px of bleed and clips the giant headline's descenders. Size bleeds for display type in `rem`/`vh`, and check every descender (g, j, p, y) in the screenshots. (2) Outlined display text (`-webkit-text-stroke`) shows a variable font's internal overlap contours as boxes and notches, even with static instances. Fill the glyphs with the ground color over a doubled stroke (`color: var(--ground); -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill`) so the fill hides the inner lines, or draw the outline as SVG.
 - **Scale display type past the brand's display token when the hero needs it.** A brand token like "display 56px" was set for product UI. Keep the brand's family, weight, and tracking *ratio*, and scale the hero to award scale (B1: 5–16× body, e.g. `clamp(4rem, 12vw, 11rem)`), tightening tracking as it grows. Say in one line that you scaled it. Everything below the hero goes back to the brand's scale.
 - The first viewport is the site's strongest authored moment: a clear message and CTA plus original imagery, video, pointer-responsive interaction, or a justified Three.js scene.
 - A composed intro sequence (GSAP timeline for story pages; CSS is enough for a light hero), but **navigation, the primary message, and the CTA are readable and usable before it completes**.
@@ -1086,7 +1089,7 @@ JS = r"""
   // Short labels that wrap: inline-ish text under ~40 chars rendered on 2+ lines
   out.wraps=[];
   document.querySelectorAll('li span, dt, dd, th, .label, [class*="badge"], [class*="chip"], [class*="tag"], button, a').forEach(el=>{
-    const t=el.textContent.trim(); if(!t||t.length>40) return;
+    const t=el.textContent.trim(); if(!t||t.length>40||el.closest('h1,h2,h3')) return;
     if([...el.children].some(c=>c.tagName.toLowerCase()!=='svg')) return; // text-only labels (icons allowed)
     const cs=getComputedStyle(el); if(cs.display==='none') return;
     const rg=document.createRange(); rg.selectNodeContents(el);
@@ -1108,6 +1111,7 @@ JS = r"""
   document.querySelectorAll('h1,h2').forEach(h=>{
     const hc=getComputedStyle(h);
     h.querySelectorAll('em,i,strong,b,span,mark').forEach(c=>{
+      if(!vis(c)||c.closest('[aria-hidden="true"]')) return;
       const cc=getComputedStyle(c), words=c.textContent.trim().split(/\s+/).length;
       if(words<=3 && c.textContent.trim().length < h.textContent.trim().length*0.6 && (cc.color!==hc.color||cc.fontStyle!==hc.fontStyle||cc.fontFamily!==hc.fontFamily)) tl.accents++;
     });
