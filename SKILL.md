@@ -7,7 +7,7 @@ description: "Senior UI/UX designer and design engineer, including Awwwards-qual
 
 Work as a senior front-end designer, design-systems engineer, and design engineer with a motion craftsman's eye. The single goal: interfaces people describe as "really nice looking" and then forget they had to think about using. Taste and usability are the job; motion, performance and code quality are how they get delivered.
 
-This skill merges Sam's UI Design Studio method with Emil Kowalski's design-engineering skills and Apple's fluid-interface principles. Where they disagree, the rule in this file is the one to follow.
+This skill merges Sam's UI Design Studio method with Emil Kowalski's design-engineering skills, Apple's fluid-interface principles, and the art-direction principles of Anthropic's frontend-design skill (Apache-2.0). Where they disagree, the rule in this file is the one to follow.
 
 ## 0. Pick the mode first
 
@@ -82,15 +82,31 @@ Interfaces are judged with real words in them, and invented facts are a liabilit
 
 ## A3. Pick a direction before building
 
-Write one line for yourself: *who this is for, what it should feel like, and the one signature move* (a typographic treatment, a photography-led layout, a color moment, a layout rhythm). Generic section stacks (hero → three features → three pricing cards → FAQ) are fine as structure, but the direction should show in every section. For a physical service, that usually means the work itself (photography, before/after) carries the page.
+Distinctive choices come from the subject's own world: its industry, materials, tools, vernacular, and audience. A design for a toy aimed at 8–11-year-olds and a dashboard for financial analysts should not be able to swap palettes. Work in two passes.
+
+**Pass 1: a compact design plan** (for anything larger than a single component; a component gets one line):
+- **Subject, audience, primary job**: one line each (the page's job is the one thing a visitor must be able to do).
+- **Color**: 4–6 named hex values with roles (`Harbor #12343B` ground, `Salt #F2EFE9` text…). When A1 found a brand, these are its values.
+- **Type**: the typefaces and each one's job (A1's brand fonts when they exist).
+- **Layout**: a one-sentence concept plus a small ASCII wireframe of the first screen and one key section, with the alignment rule (left, centered, or a fixed grid offset).
+- **Signature move**: the one place the boldness goes: a typographic treatment, a photography-led layout, a live demo, a color moment, an interaction. For a physical service it is usually the work itself (photography, before/after).
+- **2–3 principles** that make this page *this* page.
+
+**Pass 2: the generic-default test.** Before writing code, ask of each line: *would a similar prompt for a different business land here too?* If yes, it's a default, not a choice: revise it and say in one line what changed and why. Check the plan against the template tells in B5. Only then build.
+
+**One loud move, one quiet system.** Generic section stacks (hero → features → pricing → FAQ) are fine as structure. The signature move gets the boldness; every other section speaks the same system (type, color roles, motifs, spacing) quietly and consistently, so the page feels like one world without every section shouting.
 
 ## A3b. UI copy
 
-- Lead with the outcome the reader cares about, in their words ("Swirl-free in one visit", not "Premium exterior care solutions").
-- Buttons say what happens ("Book a detail", "Save changes"); use the same label for the same action everywhere.
-- Headlines of 8 words or fewer; one idea per sentence; no hedging or feature soup.
-- Errors say what went wrong and what to do next; empty states invite the next step.
-- Numbers beat adjectives: use the most specific true fact (A2), never an invented one.
+Words are design content, not decoration: each piece of text does exactly one job. Before writing, ask what the design needs to say and how it can best help the person find their way.
+
+- Lead with the outcome the reader cares about, in their words ("Swirl-free in one visit", not "Premium exterior care solutions"). Describe what something is or does in plain terms rather than selling it; specific beats clever.
+- Name things from the user's side, not the system's: people manage *notifications*, not *webhook config*.
+- Buttons say what happens ("Book a detail", "Save changes"), in active voice. An action keeps its name through the whole flow: the "Publish" button produces a "Published" toast, and the same action has the same label everywhere.
+- Headlines of 8 words or fewer; one idea per sentence; no hedging or feature soup. A full sentence with a period ("Build a survey worth answering.") reads more confident than a fragment.
+- Errors say what went wrong and how to fix it, in the interface's voice: they don't apologize and are never vague. Empty states are invitations to act.
+- Sentence case, plain verbs, no filler; tone matched to the brand and audience.
+- Numbers beat adjectives: use the most specific true fact (A2), never an invented one. Put the price in a plain sentence near the action ("$15 a month, with 10,000 responses") rather than hiding it.
 
 ## A4. When the deliverable is a component
 
@@ -104,7 +120,7 @@ Write one line for yourself: *who this is for, what it should feel like, and the
 
 ## A5. How to work
 
-- **Thin brief → decide, don't interrogate.** State your assumptions in a line or two (audience, tone, brand) and build. Ask first only when a wrong guess would waste real work: an unknown brand, the wrong platform, or an existing system you can't see.
+- **Thin brief → decide, don't interrogate.** State your assumptions in a line or two and build. The assumptions must name the **subject, the audience, and the page's primary job** (plus tone and brand), because that's where distinctive choices come from; use what you know about the user as a hint. Stop to confirm only when the subject itself is unknown ("make me a landing page" with nothing else: propose one concrete subject, audience and job, and ask), or when a wrong guess would waste real work: an unknown brand, the wrong platform, or an existing system you can't see.
 - **When a request would hurt the result, build the better version instead of asking.** E.g. "light gray headline on white" → keep the clean, quiet feel with a dark headline, lighter weight, and more whitespace, and say why in one line.
 - **Explain notable choices in one plain-language line** (a palette, layout, interaction, or piece of copy) in terms of clarity, hierarchy, or ease of use. Don't narrate routine choices.
 - **Ship working, finished pieces.** Complete, copy-paste-ready code with tokens defined once and reused. One coherent component beats five fragments.
@@ -114,6 +130,9 @@ Write one line for yourself: *who this is for, what it should feel like, and the
 
   The checker screenshots 320px, 375px, 768px and 1280px in light and dark, and flags contrast failures (opacity and modern `oklch`/`color()` colors included), overflow, unlabeled inputs, small targets, competing CTAs, short labels that wrap, and loading states whose height doesn't match the ready state. Then actually view the screenshots; the script can't judge hierarchy or taste. Fix what fails rather than listing it. Without a browser, walk the pre-ship checklist (B3) by hand.
 - **Then test behavior, which the checker can't see.** With Playwright: Tab once (the skip link comes first), operate every custom control by keyboard, open and Esc-close menus (focus returns to the trigger), load with `reduced_motion='reduce'` (no movement or scrubbed sequences; final states shown; small opacity/color feedback may remain), block the network and wait past the embed timeout (the fallback shows), check floating CTAs appear only when no other primary CTA is visible, and confirm zero horizontal overflow at 320px.
+- **Critique while you build, not only at the end.** Screenshot as you go (a picture is worth a thousand tokens) and judge it against the A3 plan. Before handing over, do the "remove one accessory" pass: find the one decoration, effect, or label that isn't earning its place, and cut it.
+- **Watch CSS specificity.** Section-type selectors (`.section`) and element selectors (`.cta`) easily cancel each other's padding and margins; keep spacing on one layer (the section owns vertical rhythm, components own their insides) and check gaps between sections in the screenshots.
+- **Keep notes when you can.** If the session has memory or a notes file, jot the direction you tried and how it landed, so the next project starts somewhere new instead of repeating the last one.
 
 ## A6. Score it honestly
 
@@ -131,7 +150,7 @@ When asked to test or score the work (or when testing this skill), score the res
 | 8 | Responsive & mobile | F1 baseline, recomposes at 320/768/1280, no overflow |
 | 9 | Motion craft | Every animation passed the gate and follows C2; zero "never ship" items |
 | 10 | Performance | Composite-only animation, lazy below the fold, no heavy dependency for one effect |
-| 11 | Distinctiveness | The A3/J1 direction is visible in every section, not just the hero; doesn't read as a template stack |
+| 11 | Distinctiveness | One signature move lands; the A3/J1 system is consistent in every section; zero B5 template tells the brief didn't ask for; passes the generic-default test |
 | 12 | Conversion | The visitor gets price, proof, and "Book" fast, with the least friction |
 
 List what the test caught and fixed, and any change the run suggests for this skill.
@@ -180,7 +199,11 @@ Keep the message short; the work speaks. Include, in this order and only where t
 
 Good practice beyond AA: respect `prefers-reduced-motion` (relates to SC 2.3.3, AAA); comfortable touch targets 44×44pt (Apple HIG) / 48×48dp (Material).
 
-Typography and layout conventions (say they're conventions if you cite them): body line length 45–75 characters (~60–70ch, set `max-width` in `ch`); body line-height ~1.5, headings ~1.05–1.25; body text 16px minimum; a type scale of 5–7 steps on a 1.2–1.333 ratio; spacing on a 4px or 8px base. **Tracking is size-specific**: tighten large display text (around `-0.02em`), leave body near `0`, give small caps/labels slight positive tracking. Build hierarchy from weight + size + leading together, and size spacing in `rem` so larger text settings don't break the layout.
+Typography and layout conventions (say they're conventions if you cite them): body line length 45–75 characters (~60–70ch, set `max-width` in `ch`; never past 80ch; serif body can run slightly longer and gets slightly more line-height than sans); body line-height ~1.5, headings ~1.05–1.25; body text 16px minimum; a text scale of 5–7 steps on a 1.2–1.333 ratio following *The Elements of Typographic Style*; spacing on a 4px or 8px base. **Display type may leave the scale**: the studied exemplars set hero type at 5× body (plumeform, 80px over 16px) up to ~16× (onlines, a single ~266px word); a hero that only reaches the next scale step reads timid. **Tracking is size-specific**: tighten display text more as it grows (about `-0.02em` at 48–80px, down to `-0.04em` at 200px+), leave body near `0`, give small labels slight positive tracking. Build hierarchy from weight + size + leading together, and size spacing in `rem` so larger text settings don't break the layout.
+
+**Type carries the personality.** Choose typefaces for this subject, not the families you'd reach for on any project. One family is enough (plumeform runs its whole site in one sans across five weights); use two only if they are clearly distinct, each with one job. In headlines, make the type treatment itself an active part of the design (scale, weight, width, a tight measure, the way a line breaks), not a neutral container for words.
+
+**The hero opens with the most characteristic thing in the subject's world**, in its best form: a headline, an image, a live demo (plumeform's hero is a working survey you can answer), an interaction, or a single huge word. "Big number + small label + supporting stats + gradient accent" is the default treatment; use it only when it truly is the best option.
 
 Motion numbers live in C2. (They replace the old "ease-in for things leaving" convention: UI never uses `ease-in`; exits use `ease-out` and run faster than entrances.)
 
@@ -190,7 +213,7 @@ Favor clarity, contrast, generous whitespace, and one strong idea per screen ove
 
 What the best sites share (studied live; see B4):
 1. **One thing per screen**: one statement, one object, or one proof per viewport.
-2. **Type carries the design**: huge display type with room around it; two typefaces, each with one job.
+2. **Type carries the design**: huge display type with room around it; one family or two, each with one job.
 3. **Pacing**: alternate loud and quiet sections; give big moments space.
 4. **Emotion, then one precise fact**: an evocative line, then the most specific true detail you have.
 5. **Show, don't tell**: the real product, the live demo, the before/after gets the biggest stage.
@@ -210,7 +233,8 @@ Run this before handing over. Fix failures rather than reporting them.
 **Hierarchy**
 - [ ] Squint test: the most important element is seen first.
 - [ ] Exactly one primary action per screen, counting sticky headers and floating mobile buttons. Hide a floating CTA while an in-page CTA for the same action is visible.
-- [ ] It looks like *this* brand, not a template: the A3 direction shows in every section.
+- [ ] It looks like *this* brand, not a template: one signature move, the same quiet system everywhere else.
+- [ ] No B5 template tells the brief didn't ask for; the "remove one accessory" pass is done.
 
 **System**
 - [ ] Colors, spacing, radii, shadows, type sizes, easing curves, and durations all come from tokens.
@@ -257,17 +281,26 @@ Run this before handing over. Fix failures rather than reporting them.
 
 ## B4. Exemplar sites: what great UX looks like, and why
 
-Read this when the user wants something memorable, premium, story-driven, or "like a really good website", or when a design is correct but flat. These are **patterns to learn from, not templates to copy**: never reuse an exemplar's copy, illustrations, characters, layout wholesale, or brand. Take the *reason* a pattern works and rebuild it. Studied live in October 2026: nesilnoble.com, onlines.com.ar, Cartier's Le Chœur des Pierres. Also worth studying: plumeform.com and the Awwwards e-commerce collection (e.g. Fitosauna, Almada Label). When they've been studied live, offer the user a new version of this skill with them added in the same structure; don't try to edit the skill file yourself.
+Read this when the user wants something memorable, premium, story-driven, or "like a really good website", or when a design is correct but flat. These are **patterns to learn from, not templates to copy**: never reuse an exemplar's copy, illustrations, characters, layout wholesale, or brand. Take the *reason* a pattern works and rebuild it. Studied live in October 2026 (nesilnoble.com, onlines.com.ar, Cartier's Le Chœur des Pierres) and November 2026 (plumeform.com, plus measurements of all three web exemplars with the Awwwards MCP's live-analysis tools). Still worth studying: the Awwwards e-commerce collection (e.g. Fitosauna, Almada Label). When new references have been studied live, offer the user a new version of this skill with them added in the same structure.
 
-**nesilnoble.com** (designer portfolio, GSAP + ScrollTrigger): a long page of full-screen chapters ending back at the opening scene with contact details.
+**What all three measured web exemplars share** (Awwwards MCP, Nov 2026): no scrubbed or pinned scroll timelines were detected on any of them; their motion is CSS keyframes with small staggers (90–250ms offsets); hover effects are few (10–20 rules on the two studios) and only on things you can act on; one CTA label is repeated unchanged; and the boldness is spent on one thing per screen (one word, one demo, one character). Award-level polish comes from type, pacing, and restraint far more than from scroll choreography.
+
+**Reference tool: the Awwwards MCP** (`npx -y awwwards-mcp`). When it's connected and the machine can reach awwwards.com, use `search_sites` / `get_site_details` / `create_design_brief` to pull award-winning references for the A3 plan, and take only high-level traits (J1). awwwards.com refuses many cloud and datacenter connections; from such a machine its search fails, but its live-analysis tools still work on any reachable site: `analyze_page_structure` (section bands and backgrounds), `export_design_tokens` (real palette, type sizes, tracking, radii), `analyze_scroll_map` and `analyze_hover_census` (how much motion there really is). Headless FPS numbers from a cloud machine are not a performance measurement.
+
+**nesilnoble.com** (designer portfolio; measured: four display families including a condensed all-caps voice, flat purple ground with grain, hard offset shadows `4px 4px 0` as a motif): a long page of full-screen chapters ending back at the opening scene with contact details.
 - Patterns: one idea per screen in huge display type; a pinned chapter ruler that shows progress and is real `<button>` navigation (any page longer than ~4 screens needs wayfinding); a header status pill answering the visitor's first question ("open to roles"; for a business: "Booking this week"); show-don't-tell (the hero name inside a design-tool selection box; a live component instead of a description); outcome-led cards (the result first, project name as the small label); a story with a bookend, with contact at the start, middle, and end; chapter color shifts within one family while texture, type, and illustration stay fixed; two-voice type assigned by role; micro-delights that confirm actions ("Copied"), sound off by default with `aria-pressed`; reduced-motion rules and a clean heading outline under heavy motion.
 - Don't copy: long time-to-information (wrong for booking businesses and tools); split-letter headings that read as one word to screen readers (keep an `aria-label`, hide the letters); no skip link past an animated intro; audio triggered by an unrelated click.
 - Translate: portfolio/playground: most of it. Local service: status pill, outcome-led service cards, before/after as the demo, bookend ending in booking; skip anything delaying price and Book. SaaS: outcome-led features, live demo, two-voice type; no chapter color inside the app.
 
-**onlines.com.ar** (Swiss-minimal web studio): big black grotesk, one blue accent, short chapters.
+**onlines.com.ar** (Swiss-minimal web studio; measured: one display family, ~266px hero word with `-10px` tracking, near-black `#1d1d1f` on white with grey `#f5f5f7` bands, one blue accent): big black grotesk, short chapters.
 - Patterns: open on one word plus a pinned "let's talk" pill; a scroll-filled statement (faint text turning solid word by word, always readable); one pinned CTA with the same words everywhere and the final section repeating it; three plain-language service cards in a gentle stagger; section mood shifts (light → near-black → white) instead of dividers; people plus live signals (headshots, open roles with timestamps); a proof stack of tilted phone screens instead of a 20-tile gallery; articles as credibility.
 - Don't copy: an unfilled state below 3:1, or a final state that depends on scrolling for screen readers; cards that look empty until they animate (the final state is the default; animate *from* it only when motion is allowed).
 - Translate: agency/service: pinned single CTA, three service cards, final section = CTA. Detailing: pinned "Book" pill, three service cards, a scroll-filled one-line promise.
+
+**plumeform.com** (survey-builder SaaS; measured: one sans family across five weights, 80px period-ended hero over 16px body, dark teal-black bands with vertical light streaks alternating with warm off-white bands, CSS-only motion):
+- Patterns: **the hero is the product working**: a real survey you can answer sits right under the headline, so "show, don't tell" happens in the first viewport; every section headline is a full outcome sentence with a period ("Choose how people answer."); body copy is unusually specific (counts of question types, named research methods) instead of adjectives; price stated as a plain sentence beside the CTA ("$15 a month, with 10,000 responses"); one label, "Start free", in the nav, the hero, and after every section; dark showcase bands alternate with light explanation bands, so pacing comes from color, not dividers; an honest one-cookie banner written in plain language.
+- Don't copy: long centered paragraphs (some run past 80ch; keep body left-aligned and narrower); `→` appended to every button and link (fine once as a brand habit, a tell when everywhere: B5).
+- Translate: SaaS or tool: live demo as hero, one CTA label everywhere, price in a sentence. Local service: a real before/after or booking widget as the hero object; specific facts per service.
 
 **Cartier, Le Chœur des Pierres** (luxury editorial): each piece is a chapter: spaced-caps name → poetic serif line → the piece huge on a matching ground → macro close-up → one precise fact → a watercolor wash into the next.
 - Patterns: the product at macro scale; sketch → reality reveal; poetry, then precision; color as chapter; silent chrome; generous negative space and narrow text blocks.
@@ -275,6 +308,24 @@ Read this when the user wants something memorable, premium, story-driven, or "li
 - Translate: launch page: macro imagery, poetry → fact, per-chapter color. Detailing: macro close-ups of finished paint, one precise true fact per service. App: restraint and negative space only.
 
 When any of this playbook is used, regardless of page type: the page reads correctly with motion off and JavaScript slow or blocked; Space, Page Down, End, and the scrollbar keep working; animated text keeps its real words for screen readers and search; the first screen loads fast.
+
+## B5. Template tells: defaults that make a page read as generated
+
+AI-generated design currently clusters around a few looks. Each is legitimate for *some* brief, but they appear regardless of subject, so they read as defaults, not choices. **The brief's and the brand's own words always win**: if the user asks for one of these looks, or it is their existing brand or personal design system (A1), use it exactly. Where an axis is free, don't spend that freedom here.
+
+1. **Warm cream + serif + terracotta**: a background near `#F4F1EA`, a high-contrast serif display, a terracotta/clay accent near `#D97757` (Anthropic's own Claude accent, so on a client's brief it reads as a tell).
+2. **Near-black + one acid accent**: near-black ground with a single bright acid-green or vermilion accent.
+3. **Broadsheet**: hairline rules, zero border-radius, dense newspaper-like columns.
+4. **The SaaS-card kit**: content chopped into identical rounded cards, one radius on everything regardless of hierarchy, the same soft grey shadow (`rgba(0,0,0,.1)`) under each, gradient washes as decoration.
+5. **Template chrome**: a tracked-out ALL-CAPS eyebrow above every heading; meta strings joined with middle dots (`A · B · C`); labels built as `WORD — fragment`; tinted near-black (`#0B0B0B`, `#111`) standing in for black; a monospace face for small data labels; `→` appended to link and button text.
+
+Typographic tells: accenting a single word or phrase in a headline (one word in italic, bold, or a different color); all-caps for routine labels; typographic labels added above content that doesn't need them.
+
+**Structure is information.** Outlines, borders, numbering, eyebrows, dividers, and labels must encode something about the content, not decorate it. Numbered markers (01 / 02 / 03) only when the content really is a sequence (steps, a timeline); check before adding them.
+
+**Motion tells**: fade-and-slide-up entrances on every section and hover transitions on every card (see C1's one-moment rule).
+
+**A tell can be a voice.** nesilnoble's condensed all-caps type is its brand, applied with intent across the whole site; that's a choice. The test is whether you'd have made the same move for a different subject (A3's generic-default test). If you would, change it. `check_page.py` reports likely tells as informational lines; judge each one rather than deleting by rule.
 
 ---
 
@@ -298,6 +349,8 @@ Two failure modes, and the first is worse: **animating something that shouldn't 
 **Purpose**: name it in one word or don't build it: **feedback** (the interface heard you), **spatial consistency** (where it came from / went), **state indication**, **preventing a jarring change**, **explanation** (marketing/onboarding only), **delight** (rare tier only). "It looks cool" on a frequently seen element is a reason to stop.
 
 **Function**: data the user is reading or acting on doesn't move for style. A decorative mouse-tracking effect belongs on a marketing page, not on a banking graph.
+
+**Ambient motion budget: one orchestrated moment.** Motion the user didn't trigger (page-load sequences, scroll reveals, idle loops) is spent sparingly and only to draw attention. Default to **one** orchestrated moment per page, usually the hero intro or a single reveal; it lands better than scattered effects. Fade-and-slide-up entrances on every section and hover transitions on every card are the generic default and read as generated (B5). Motion that answers a person's action (opening, expanding, confirming, a press) is a different budget: welcome whenever it shows what changed. Extra ambient moments are allowed only in mode 16, each with a named narrative reason (J4).
 
 If a request fails the gate, say so plainly and offer the non-motion alternative (an instant state change, a static affordance).
 
@@ -456,6 +509,7 @@ These use **Base UI** attribute names (`data-starting-style`, `data-ending-style
 .button:active .overlay { clip-path: inset(0 0 0 0); transition: clip-path 2s linear; }
 
 /* Scroll reveal: marketing only, fire once (IntersectionObserver / useInView { once: true, margin: "-100px" }).
+   Counts against the one-moment budget (C1): use it for the one reveal that matters, not on every section.
    Hidden only when JS runs and motion is allowed; script must also reveal anything already in view on load. */
 @media (prefers-reduced-motion: no-preference) {
   .js .reveal { clip-path: inset(0 0 100% 0); transition: clip-path 600ms var(--ease-in-out); }
@@ -853,7 +907,7 @@ Build a cohesive, memorable site whose visual idea, media, typography, and motio
 - Study the user's references completely before building. Extract only high-level traits: hierarchy, pacing, contrast, image treatment, motion principles. Never reuse, trace, or closely reproduce reference assets, screenshots, source code, identity, or copy. The layout, copy system, imagery, and interaction language must be materially new *relative to the references*. "New" never means replacing the client's own existing brand: A1 still decides the identity.
 - Aura.build top-asset imagery is high-level inspiration only, used when the user asks for it or it's relevant and available. It's not an asset library.
 - Name the mode(s) you're using from this skill (and any other installed web-design skill you lean on). Keep to the smallest relevant set; don't blend unrelated aesthetic systems.
-- Write a compact direction before coding (it extends A3's one-liner): **visual thesis · hero focal asset · type hierarchy · color system · section sequence · motion narrative · smooth-scroll decision (none, or Lenis, and why) · GSAP decision · Three.js decision (yes/no and why) · asset provenance plan.**
+- Write a compact direction before coding (it extends A3's two-pass plan, including the generic-default test): **visual thesis · hero focal asset · type hierarchy · color system · section sequence · motion narrative · smooth-scroll decision (none, or Lenis, and why) · GSAP decision · Three.js decision (yes/no and why) · asset provenance plan.**
 
 ## J2. An honest asset system
 
@@ -872,10 +926,11 @@ Build a cohesive, memorable site whose visual idea, media, typography, and motio
 
 ## J4. The motion system
 
-- **GSAP is the choreography engine** for intros, section reveals, and scroll-linked sequences. **CSS stays the tool for hover, focus, and tap states** (C2's cheapest-tool rule still governs micro-interactions). Never let two systems control the same property.
+- **Start from one orchestrated moment** (C1), usually the hero intro. Add each further reveal or scroll-linked sequence only with a named narrative reason ("the sketch becomes the product", "the price lands after the proof"); "it feels more premium" isn't one. The measured exemplars (B4) reach award level with no scrubbed or pinned timelines at all.
+- **GSAP is the choreography engine** for intros, earned section reveals, and scroll-linked sequences. **CSS stays the tool for hover, focus, and tap states** (C2's cheapest-tool rule still governs micro-interactions). Never let two systems control the same property.
 - **At most one smooth-scroll engine; none is a valid choice and the default for booking/service sites.** If one earns its place, prefer **Lenis** (it keeps native scroll; Locomotive Scroll v5 is built on it; avoid older transform-hijacking scroller proxies, which break find-in-page and the scrollbar). Never install or initialize two. Wire it to ScrollTrigger: `lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add((t) => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);`, call `ScrollTrigger.refresh()` after fonts and media load, and destroy everything on cleanup. Native behaviors must survive: Space, Page Down, End, anchor links, find-in-page, and the scrollbar (B4).
 - **Reduced motion here means final states, immediately.** Under `prefers-reduced-motion: reduce`, bypass smooth scrolling and scrubbed or pinned timelines and render final states. Don't merely shorten them. (Small UI feedback such as opacity and color changes may remain, per C2's "gentler, not zero".)
-- Choreograph section by section: major headings reveal word by word with a restrained stagger (C2's 30–80ms range), then supporting copy, then media. Entrances still use `--ease-out`-family curves, `transform`/`opacity`, and no `scale(0)`.
+- When a section earns a reveal, choreograph it as one beat: the heading (word by word only if the words matter one at a time) with a restrained stagger (C2's 30–80ms range), then supporting copy, then media. Sections without an earned reveal are simply there. Entrances still use `--ease-out`-family curves, `transform`/`opacity`, and no `scale(0)`.
 - **Accessible split text**: keep an unsplit accessible name on the heading (`aria-label`, or a visually hidden copy) and `aria-hidden` the split words. Never split links or meaningful inline markup. Without JavaScript the unsplit text is visible.
 - ScrollTrigger only for justified scrubbed or pinned sequences; every pin has a narrative reason.
 
@@ -892,7 +947,7 @@ Build a cohesive, memorable site whose visual idea, media, typography, and motio
 - A complete semantic page, not a hero-only concept: responsive navigation, coherent section progression, concrete conversion content, a final CTA, a footer, robust form and control states, and visible keyboard focus.
 - A distinct art-directed idea, a memorable first viewport, disciplined type and spacing, intentional crops, authored transitions, and refined hover, focus, active, loading, disabled, error, touch, and reduced-motion behavior.
 - Performance: responsive media, lazy loading below the fold, bounded transforms, limited blur (C4), capped canvas work, no continuously animated offscreen content.
-- **Reject**: generic gradient blobs, ornamental bento grids, glass applied everywhere, stock component layouts, fake testimonials, invented partnerships, logo-wall theater, and motion with no narrative role.
+- **Reject**: generic gradient blobs, ornamental bento grids, glass applied everywhere, stock component layouts, fake testimonials, invented partnerships, logo-wall theater, motion with no narrative role, and the B5 template tells.
 
 ## J7. Validate before handoff (in addition to A5/B3)
 
@@ -933,6 +988,9 @@ and prints a report of things a human reviewer would otherwise have to hunt for:
   - inputs without a label, images without alt
   - interactive targets smaller than 24x24 CSS px (WCAG 2.5.8)
   - how many primary-styled CTAs are visible in the first phone viewport
+  - possible template tells (B5): tracked caps eyebrows, arrow-suffixed
+    buttons, ' · ' meta strings, one-word headline accents, near-black grounds,
+    small mono labels (informational; never fails the run)
   - component state previews: wrap each state in <section data-state="Ready">,
     <section data-state="Loading">… and the script compares their heights,
     flagging a loading/skeleton state that would make the layout jump, and
@@ -1026,6 +1084,28 @@ JS = r"""
     if(tops.size>1) out.wraps.push(t);
   });
   out.wraps=[...new Set(out.wraps)].slice(0,8);
+  // Template tells (B5): informational only
+  const tl={eyebrows:0,arrows:0,dots:0,accents:0,nearBlack:0,mono:0};
+  const vis=el=>{const r=el.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(el).visibility!=='hidden';};
+  document.querySelectorAll('h1,h2,h3').forEach(h=>{
+    let p=h.previousElementSibling; if(!p||!vis(p)) return;
+    const cs=getComputedStyle(p), t=p.textContent.trim();
+    if(t && t.length<40 && (cs.textTransform==='uppercase'||t===t.toUpperCase()&&/[A-Z]/.test(t)) && parseFloat(cs.letterSpacing)>0.5) tl.eyebrows++;
+  });
+  document.querySelectorAll('a,button').forEach(el=>{ if(vis(el)&&/(→|->)\s*$/.test(el.textContent.trim())) tl.arrows++; });
+  const tw=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+  while(tw.nextNode()){ const v=tw.currentNode.textContent; if(/\S \u00B7 \S/.test(v)&&tw.currentNode.parentElement&&vis(tw.currentNode.parentElement)) tl.dots++; }
+  document.querySelectorAll('h1,h2').forEach(h=>{
+    const hc=getComputedStyle(h);
+    h.querySelectorAll('em,i,strong,b,span,mark').forEach(c=>{
+      const cc=getComputedStyle(c), words=c.textContent.trim().split(/\s+/).length;
+      if(words<=3 && c.textContent.trim().length < h.textContent.trim().length*0.6 && (cc.color!==hc.color||cc.fontStyle!==hc.fontStyle||cc.fontFamily!==hc.fontFamily)) tl.accents++;
+    });
+  });
+  const nb=new Set(['rgb(11, 11, 11)','rgb(17, 17, 17)','rgb(10, 10, 10)']);
+  [document.body,...document.querySelectorAll('body > *, main > *, section')].forEach(el=>{ if(nb.has(getComputedStyle(el).backgroundColor)) tl.nearBlack++; });
+  document.querySelectorAll('small,span,dt,dd,time,li,p').forEach(el=>{ const cs=getComputedStyle(el); if(vis(el)&&/mono/i.test(cs.fontFamily)&&parseFloat(cs.fontSize)<=13&&!el.closest('pre,code')) tl.mono++; });
+  out.tells=tl;
   if(opts.countCtas){
     const vh=innerHeight;
     document.querySelectorAll('a,button').forEach(el=>{
@@ -1097,7 +1177,14 @@ def main():
         for t in r.get("wraps", []):
             lines.append(f"short label wraps onto extra lines: \"{t}\" (likely a cramped column)")
         if r["unverified"]: lines.append(f"(info) {r['unverified']} text elements sit on images/gradients — check those by eye")
-        problems += sum(1 for l in lines if not l.startswith("(info)"))
+        tl = r.get("tells", {})
+        names = {"eyebrows": "tracked uppercase eyebrows above headings", "arrows": "links/buttons ending in an arrow",
+                 "dots": "' · ' meta strings", "accents": "single-word accents inside h1/h2", "nearBlack": "#0B0B0B/#111-style near-black grounds",
+                 "mono": "small monospace labels"}
+        found = [f"{v} {names[k]}" for k, v in tl.items() if v]
+        if found and key.startswith("desktop-light"):
+            lines.append("(taste) possible template tells (B5), judge each: " + "; ".join(found))
+        problems += sum(1 for l in lines if not l.startswith("("))
         print(f"\n== {key} ==")
         print("\n".join("  - " + l for l in lines) if lines else "  no issues found")
     print(f"\nScreenshots in {os.path.abspath(a.out)} — look at them; this script can't judge hierarchy or taste.")
