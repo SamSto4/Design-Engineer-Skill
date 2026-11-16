@@ -923,6 +923,8 @@ Build a cohesive, memorable site whose visual idea, media, typography, and motio
 
 ## J3. The hero
 
+- **The signature move owns the first viewport.** In this mode it takes most of the screen (roughly 60% or more at 1280px and on phones), not a card beside a standard two-column hero. A clever idea in a small panel reads as a component demo, not a site.
+- **Scale display type past the brand's display token when the hero needs it.** A brand token like "display 56px" was set for product UI. Keep the brand's family, weight, and tracking *ratio*, and scale the hero to award scale (B1: 5–16× body, e.g. `clamp(4rem, 12vw, 11rem)`), tightening tracking as it grows. Say in one line that you scaled it. Everything below the hero goes back to the brand's scale.
 - The first viewport is the site's strongest authored moment: a clear message and CTA plus original imagery, video, pointer-responsive interaction, or a justified Three.js scene.
 - A composed intro sequence (GSAP timeline for story pages; CSS is enough for a light hero), but **navigation, the primary message, and the CTA are readable and usable before it completes**.
 - Pointer effects are additive: they handle touch, keyboard, coarse pointers, window blur, and `visibilitychange` without leaving the UI half-animated.
